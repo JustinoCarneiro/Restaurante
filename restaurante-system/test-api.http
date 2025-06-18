@@ -8,3 +8,14 @@ Content-Type: application/json
   "preco": 45.50,
   "disponivel": true
 }
+
+### Listar todos os produtos
+GET http://localhost:8080/api/produtos
+
+### Buscar um produto por ID (sucesso)
+# Cole o ID de um produto existente da lista acima
+GET http://localhost:8080/api/produtos/579322a1-a2b1-4f3c-b25d-f1478e56cf71
+
+### Buscar um produto por ID (erro 404)
+# Este UUID aleatório provavelmente não existe no seu banco
+GET http://localhost:8080/api/produtos/00000000-0000-0000-0000-000000000000
