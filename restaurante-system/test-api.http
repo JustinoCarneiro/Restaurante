@@ -1,0 +1,10 @@
+### Criar um novo produto
+POST http://localhost:8080/api/produtos
+Content-Type: application/json
+
+{
+  "nome": "Pizza Margherita",
+  "descricao": "Molho de tomate fresco, mussarela de búfala e manjericão.",
+  "preco": 45.50,
+  "disponivel": true
+}
