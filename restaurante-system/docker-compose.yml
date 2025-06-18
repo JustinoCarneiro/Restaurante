@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  mariadb:
+    image: mariadb:10.6
+    container_name: restaurante-db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: restaurante_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+  backend:
+    container_name: restaurante-backend
+    build:
+      # Contexto: o caminho para a pasta que contém o Dockerfile e o código-fonte
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      # Mapeia a porta 8080 do contêiner para a porta 8080 da sua máquina/Codespace
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/restaurante_db?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - mariadb
+
+volumes:
+  mariadb_data:
