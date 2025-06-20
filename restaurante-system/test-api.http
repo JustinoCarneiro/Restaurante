@@ -18,4 +18,20 @@ GET http://localhost:8080/api/produtos/579322a1-a2b1-4f3c-b25d-f1478e56cf71
 
 ### Buscar um produto por ID (erro 404)
 # Este UUID aleatório provavelmente não existe no seu banco
-GET http://localhost:8080/api/produtos/00000000-0000-0000-0000-000000000000
+GET http://localhost:8080/api/produtos/00000000-0000-0000-0000-000000000000]
+
+### Atualizar um produto existente
+# Cole o ID de um produto existente abaixo
+PUT http://localhost:8080/api/produtos/579322a1-a2b1-4f3c-b25d-f1478e56cf71
+Content-Type: application/json
+
+{
+  "nome": "Pizza Margherita ESPECIAL",
+  "descricao": "A clássica, agora com borda recheada de catupiry!",
+  "preco": 55.00,
+  "disponivel": false
+}
+
+### Deletar um produto existente
+# Cole o ID de um produto que você quer deletar
+DELETE http://localhost:8080/api/produtos/579322a1-a2b1-4f3c-b25d-f1478e56cf71

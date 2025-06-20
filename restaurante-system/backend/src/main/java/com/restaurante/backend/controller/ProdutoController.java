@@ -34,16 +34,43 @@ public class ProdutoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Produto> buscarProdutoPorId(@PathVariable UUID id) { // 4. @PathVariable captura o ID da URL
+    public ResponseEntity<Produto> buscarProdutoPorId(@PathVariable UUID id) {
 
-        // 5. Usa o método findById() que retorna um Optional
         Optional<Produto> produto = produtoRepository.findById(id);
 
-        // 6. Verifica se o produto foi encontrado antes de retorná-lo
         if (produto.isPresent()) {
             return ResponseEntity.ok(produto.get());
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Produto> atualizarProduto(
+            @PathVariable UUID id,
+            @RequestBody Produto produto) {
+
+        return produtoRepository.findById(id)
+            .map(produtoExistente -> {
+                produtoExistente.setNome(produto.getNome());
+                produtoExistente.setDescricao(produto.getDescricao());
+                produtoExistente.setPreco(produto.getPreco());
+                produtoExistente.setDisponivel(produto.isDisponivel());
+
+                Produto produtoAtualizado = produtoRepository.save(produtoExistente);
+                return ResponseEntity.ok(produtoAtualizado);
+            })
+            .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarProduto(@PathVariable UUID id) {
+        if (!produtoRepository.existsById(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        produtoRepository.deleteById(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
