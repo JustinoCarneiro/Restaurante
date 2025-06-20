@@ -1,0 +1,33 @@
+<div class="form-container">
+  <h2>Adicionar Novo Produto</h2>
+  <form [formGroup]="produtoForm" (ngSubmit)="onSubmit()">
+
+    <div class="form-field">
+      <label for="nome">Nome do Produto</label>
+      <input id="nome" type="text" formControlName="nome">
+      <div *ngIf="produtoForm.get('nome')?.invalid && produtoForm.get('nome')?.touched" class="error-message">
+        Nome é obrigatório e deve ter no mínimo 3 caracteres.
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label for="descricao">Descrição</label>
+      <textarea id="descricao" formControlName="descricao"></textarea>
+    </div>
+
+    <div class="form-field">
+      <label for="preco">Preço</label>
+      <input id="preco" type="number" formControlName="preco">
+      <div *ngIf="produtoForm.get('preco')?.invalid && produtoForm.get('preco')?.touched" class="error-message">
+        Preço é obrigatório e deve ser maior que zero.
+      </div>
+    </div>
+
+    <div class="form-field checkbox">
+      <input id="disponivel" type="checkbox" formControlName="disponivel">
+      <label for="disponivel">Disponível</label>
+    </div>
+
+    <button type="submit" [disabled]="produtoForm.invalid">Salvar Produto</button>
+  </form>
+</div>
