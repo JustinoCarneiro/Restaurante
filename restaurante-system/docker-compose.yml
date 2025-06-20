@@ -17,11 +17,9 @@ services:
   backend:
     container_name: restaurante-backend
     build:
-      # Contexto: o caminho para a pasta que contém o Dockerfile e o código-fonte
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      # Mapeia a porta 8080 do contêiner para a porta 8080 da sua máquina/Codespace
       - "8080:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/restaurante_db?createDatabaseIfNotExist=true
@@ -30,6 +28,16 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     depends_on:
       - mariadb
+      
+  frontend:
+    container_name: restaurante-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
 
 volumes:
   mariadb_data:
