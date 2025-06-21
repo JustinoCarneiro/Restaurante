@@ -12,23 +12,31 @@ export class ProdutoService {
 
   constructor(private http: HttpClient) { }
 
+  // Read (All)
   getProdutos(): Observable<Produto[]> {
     return this.http.get<Produto[]>(this.apiUrl);
   }
 
+  // Read (by ID)
+  getProdutoById(id: string): Observable<Produto> {
+    // CORREÇÃO: Usar crases ``
+    return this.http.get<Produto>(`${this.apiUrl}/${id}`);
+  }
+
+  // Create
   createProduto(produtoData: Omit<Produto, 'id'>): Observable<Produto> {
     return this.http.post<Produto>(this.apiUrl, produtoData);
   }
 
+  // Update
   updateProduto(id: string, produtoData: Omit<Produto, 'id'>): Observable<Produto> {
-    return this.http.put<Produto>(`<span class="math-inline">\{this\.apiUrl\}/</span>{id}`, produtoData);
+    // CORREÇÃO: Usar crases ``
+    return this.http.put<Produto>(`${this.apiUrl}/${id}`, produtoData);
   }
 
+  // Delete
   deleteProduto(id: string): Observable<void> {
-    return this.http.delete<void>(`<span class="math-inline">\{this\.apiUrl\}/</span>{id}`);
-  }
-
-  getProdutoById(id: string): Observable<Produto> {
-    return this.http.get<Produto>(`<span class="math-inline">\{this\.apiUrl\}/</span>{id}`);
+    // CORREÇÃO: Usar crases ``
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }
