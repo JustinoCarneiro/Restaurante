@@ -1,0 +1,28 @@
+<div class="manage-container">
+  <h1>Gerenciar Cardápio</h1>
+
+  <a routerLink="/admin/produtos/novo" class="btn-novo">Adicionar Novo Produto</a>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Preço</th>
+        <th>Disponível</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let produto of produtos">
+        <td>{{ produto.nome }}</td>
+        <td>R$ {{ produto.preco.toFixed(2).replace('.', ',') }}</td>
+        <td>{{ produto.disponivel ? 'Sim' : 'Não' }}</td>
+        <td class="acoes">
+          <button class="btn-editar">Editar</button>
+          <button class="btn-excluir" (click)="excluirProduto(produto.id)">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p *ngIf="produtos.length === 0">Nenhum produto cadastrado.</p>
+</div>

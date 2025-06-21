@@ -1,4 +1,3 @@
-// frontend/src/app/services/produto.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -19,5 +18,17 @@ export class ProdutoService {
 
   createProduto(produtoData: Omit<Produto, 'id'>): Observable<Produto> {
     return this.http.post<Produto>(this.apiUrl, produtoData);
+  }
+
+  updateProduto(id: string, produtoData: Omit<Produto, 'id'>): Observable<Produto> {
+    return this.http.put<Produto>(`<span class="math-inline">\{this\.apiUrl\}/</span>{id}`, produtoData);
+  }
+
+  deleteProduto(id: string): Observable<void> {
+    return this.http.delete<void>(`<span class="math-inline">\{this\.apiUrl\}/</span>{id}`);
+  }
+
+  getProdutoById(id: string): Observable<Produto> {
+    return this.http.get<Produto>(`<span class="math-inline">\{this\.apiUrl\}/</span>{id}`);
   }
 }
