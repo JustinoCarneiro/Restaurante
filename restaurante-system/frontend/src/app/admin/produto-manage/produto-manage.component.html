@@ -18,7 +18,7 @@
         <td>R$ {{ produto.preco.toFixed(2).replace('.', ',') }}</td>
         <td>{{ produto.disponivel ? 'Sim' : 'Não' }}</td>
         <td class="acoes">
-          <button class="btn-editar">Editar</button>
+          <button class="btn-editar" (click)="editarProduto(produto.id)">Editar</button>
           <button class="btn-excluir" (click)="excluirProduto(produto.id)">Excluir</button>
         </td>
       </tr>

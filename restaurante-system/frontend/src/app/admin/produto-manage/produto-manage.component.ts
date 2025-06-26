@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router'; // Importe o Router
 import { Produto } from '../../model/produto.model';
 import { ProdutoService } from '../../services/produto.service';
 
@@ -15,7 +15,7 @@ export class ProdutoManageComponent implements OnInit {
 
   produtos: Produto[] = [];
 
-  constructor(private produtoService: ProdutoService) { }
+  constructor(private produtoService: ProdutoService, private router: Router) { } // Injete o Router
 
   ngOnInit(): void {
     this.carregarProdutos();
@@ -25,6 +25,10 @@ export class ProdutoManageComponent implements OnInit {
     this.produtoService.getProdutos().subscribe(dados => {
       this.produtos = dados;
     });
+  }
+
+  editarProduto(id: string): void {
+    this.router.navigate(['/admin/produtos/editar', id]);
   }
 
   excluirProduto(id: string): void {

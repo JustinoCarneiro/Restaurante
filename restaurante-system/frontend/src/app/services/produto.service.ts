@@ -19,7 +19,6 @@ export class ProdutoService {
 
   // Read (by ID)
   getProdutoById(id: string): Observable<Produto> {
-    // CORREÇÃO: Usar crases ``
     return this.http.get<Produto>(`${this.apiUrl}/${id}`);
   }
 
@@ -29,14 +28,12 @@ export class ProdutoService {
   }
 
   // Update
-  updateProduto(id: string, produtoData: Omit<Produto, 'id'>): Observable<Produto> {
-    // CORREÇÃO: Usar crases ``
+  updateProduto(id: string, produtoData: Partial<Produto>): Observable<Produto> {
     return this.http.put<Produto>(`${this.apiUrl}/${id}`, produtoData);
   }
 
   // Delete
   deleteProduto(id: string): Observable<void> {
-    // CORREÇÃO: Usar crases ``
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router'; // Importar ActivatedRoute
 import { ProdutoService } from '../../services/produto.service';
+import { Produto } from '../../model/produto.model';
 
 @Component({
   selector: 'app-produto-form',
@@ -13,13 +14,15 @@ import { ProdutoService } from '../../services/produto.service';
 })
 export class ProdutoFormComponent implements OnInit {
   produtoForm: FormGroup;
+  isEditMode = false;
+  produtoId: string | null = null;
 
   constructor(
     private fb: FormBuilder,
     private produtoService: ProdutoService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute // Injetar ActivatedRoute
   ) {
-    // Inicializa o formulário no construtor
     this.produtoForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(3)]],
       descricao: [''],
@@ -28,25 +31,37 @@ export class ProdutoFormComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.produtoId = this.route.snapshot.paramMap.get('id');
+    if (this.produtoId) {
+      this.isEditMode = true;
+      this.produtoService.getProdutoById(this.produtoId).subscribe(produto => {
+        this.produtoForm.patchValue(produto);
+      });
+    }
+  }
 
   onSubmit(): void {
     if (this.produtoForm.invalid) {
       return;
     }
 
-    console.log('Enviando dados:', this.produtoForm.value);
-
-    this.produtoService.createProduto(this.produtoForm.value).subscribe({
-      next: (produtoCriado) => {
-        console.log('Produto criado com sucesso!', produtoCriado);
-        alert('Produto criado com sucesso!');
-        this.router.navigate(['/cardapio']); // Navega para a lista de produtos após o sucesso
-      },
-      error: (err) => {
-        console.error('Erro ao criar produto', err);
-        alert('Erro ao criar produto. Veja o console para mais detalhes.');
-      }
-    });
+    if (this.isEditMode && this.produtoId) {
+      this.produtoService.updateProduto(this.produtoId, this.produtoForm.value).subscribe({
+        next: () => {
+          alert('Produto atualizado com sucesso!');
+          this.router.navigate(['/admin/produtos']);
+        },
+        error: (err) => alert('Erro ao atualizar produto.')
+      });
+    } else {
+      this.produtoService.createProduto(this.produtoForm.value).subscribe({
+        next: () => {
+          alert('Produto criado com sucesso!');
+          this.router.navigate(['/admin/produtos']);
+        },
+        error: (err) => alert('Erro ao criar produto.')
+      });
+    }
   }
 }
